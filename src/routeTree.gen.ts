@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as ApiCmsTestimonialsRouteImport } from './routes/api.cms.testimonials'
+import { Route as ApiCmsServicesRouteImport } from './routes/api.cms.services'
+import { Route as ApiCmsFaqsRouteImport } from './routes/api.cms.faqs'
+import { Route as ApiCmsAboutRouteImport } from './routes/api.cms.about'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiContactRoute = ApiContactRouteImport.update({
+  id: '/api/contact',
+  path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCmsTestimonialsRoute = ApiCmsTestimonialsRouteImport.update({
+  id: '/api/cms/testimonials',
+  path: '/api/cms/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCmsServicesRoute = ApiCmsServicesRouteImport.update({
+  id: '/api/cms/services',
+  path: '/api/cms/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCmsFaqsRoute = ApiCmsFaqsRouteImport.update({
+  id: '/api/cms/faqs',
+  path: '/api/cms/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCmsAboutRoute = ApiCmsAboutRouteImport.update({
+  id: '/api/cms/about',
+  path: '/api/cms/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/cms/about': typeof ApiCmsAboutRoute
+  '/api/cms/faqs': typeof ApiCmsFaqsRoute
+  '/api/cms/services': typeof ApiCmsServicesRoute
+  '/api/cms/testimonials': typeof ApiCmsTestimonialsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/cms/about': typeof ApiCmsAboutRoute
+  '/api/cms/faqs': typeof ApiCmsFaqsRoute
+  '/api/cms/services': typeof ApiCmsServicesRoute
+  '/api/cms/testimonials': typeof ApiCmsTestimonialsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/cms/about': typeof ApiCmsAboutRoute
+  '/api/cms/faqs': typeof ApiCmsFaqsRoute
+  '/api/cms/services': typeof ApiCmsServicesRoute
+  '/api/cms/testimonials': typeof ApiCmsTestimonialsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/api/contact'
+    | '/api/cms/about'
+    | '/api/cms/faqs'
+    | '/api/cms/services'
+    | '/api/cms/testimonials'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/api/contact'
+    | '/api/cms/about'
+    | '/api/cms/faqs'
+    | '/api/cms/services'
+    | '/api/cms/testimonials'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/contact'
+    | '/api/cms/about'
+    | '/api/cms/faqs'
+    | '/api/cms/services'
+    | '/api/cms/testimonials'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiContactRoute: typeof ApiContactRoute
+  ApiCmsAboutRoute: typeof ApiCmsAboutRoute
+  ApiCmsFaqsRoute: typeof ApiCmsFaqsRoute
+  ApiCmsServicesRoute: typeof ApiCmsServicesRoute
+  ApiCmsTestimonialsRoute: typeof ApiCmsTestimonialsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +117,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/contact': {
+      id: '/api/contact'
+      path: '/api/contact'
+      fullPath: '/api/contact'
+      preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cms/testimonials': {
+      id: '/api/cms/testimonials'
+      path: '/api/cms/testimonials'
+      fullPath: '/api/cms/testimonials'
+      preLoaderRoute: typeof ApiCmsTestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cms/services': {
+      id: '/api/cms/services'
+      path: '/api/cms/services'
+      fullPath: '/api/cms/services'
+      preLoaderRoute: typeof ApiCmsServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cms/faqs': {
+      id: '/api/cms/faqs'
+      path: '/api/cms/faqs'
+      fullPath: '/api/cms/faqs'
+      preLoaderRoute: typeof ApiCmsFaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cms/about': {
+      id: '/api/cms/about'
+      path: '/api/cms/about'
+      fullPath: '/api/cms/about'
+      preLoaderRoute: typeof ApiCmsAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiContactRoute: ApiContactRoute,
+  ApiCmsAboutRoute: ApiCmsAboutRoute,
+  ApiCmsFaqsRoute: ApiCmsFaqsRoute,
+  ApiCmsServicesRoute: ApiCmsServicesRoute,
+  ApiCmsTestimonialsRoute: ApiCmsTestimonialsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
